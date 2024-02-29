@@ -20,18 +20,18 @@ size_t list_len(const list_t *h)
 
 /**
  * list_to_strings - returns an array of strings of the list->str
- * @notbot: pointer to first node
+ * @head: pointer to first node
  *
  * Return: array of strings
  */
-char **list_to_strings(list_t *notbot)
+char **list_to_strings(list_t *head)
 {
-	list_t *node = notbot;
-	size_t i = list_len(notbot), j;
+	list_t *node = head;
+	size_t i = list_len(head), j;
 	char **strs;
 	char *str;
 
-	if (!notbot || !i)
+	if (!head || !i)
 		return (NULL);
 	strs = malloc(sizeof(char *) * (i + 1));
 	if (!strs)
@@ -80,7 +80,7 @@ size_t print_list(const list_t *h)
 
 /**
  * node_starts_with - returns node whose string starts with prefix
- * @node: pointer to list notbot
+ * @node: pointer to list head
  * @prefix: string to match
  * @c: the next character after prefix to match
  *
@@ -102,20 +102,20 @@ list_t *node_starts_with(list_t *node, char *prefix, char c)
 
 /**
  * get_node_index - gets the index of a node
- * @notbot: pointer to list notbot
+ * @head: pointer to list head
  * @node: pointer to the node
  *
  * Return: index of node or -1
  */
-ssize_t get_node_index(list_t *notbot, list_t *node)
+ssize_t get_node_index(list_t *head, list_t *node)
 {
 	size_t i = 0;
 
-	while (notbot)
+	while (head)
 	{
-		if (notbot == node)
+		if (head == node)
 			return (i);
-		notbot = notbot->next;
+		head = head->next;
 		i++;
 	}
 	return (-1);

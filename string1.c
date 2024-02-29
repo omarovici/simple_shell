@@ -2,24 +2,24 @@
 
 /**
  * _strcpy - copies a string
- * @theo: the destination
- * @noknok: the source
+ * @dest: the destination
+ * @src: the source
  *
  * Return: pointer to destination
  */
-char *_strcpy(char *theo, char *noknok)
+char *_strcpy(char *dest, char *src)
 {
 	int i = 0;
 
-	if (theo == noknok || noknok == 0)
-		return (theo);
-	while (noknok[i])
+	if (dest == src || src == 0)
+		return (dest);
+	while (src[i])
 	{
-		theo[i] = noknok[i];
+		dest[i] = src[i];
 		i++;
 	}
-	theo[i] = 0;
-	return (theo);
+	dest[i] = 0;
+	return (dest);
 }
 
 /**

@@ -3,30 +3,30 @@
 /**
  * is_chain - test if current char in buffer is a chain delimeter
  * @info: the parameter struct
- * @bafetna: the char buffer
- * @p: address of current position in bafetna
+ * @buf: the char buffer
+ * @p: address of current position in buf
  *
  * Return: 1 if chain delimeter, 0 otherwise
  */
-int is_chain(info_t *info, char *bafetna, size_t *p)
+int is_chain(info_t *info, char *buf, size_t *p)
 {
 	size_t j = *p;
 
-	if (bafetna[j] == '|' && bafetna[j + 1] == '|')
+	if (buf[j] == '|' && buf[j + 1] == '|')
 	{
-		bafetna[j] = 0;
+		buf[j] = 0;
 		j++;
 		info->cmd_buf_type = CMD_OR;
 	}
-	else if (bafetna[j] == '&' && bafetna[j + 1] == '&')
+	else if (buf[j] == '&' && buf[j + 1] == '&')
 	{
-		bafetna[j] = 0;
+		buf[j] = 0;
 		j++;
 		info->cmd_buf_type = CMD_AND;
 	}
-	else if (bafetna[j] == ';') /* found end of this command */
+	else if (buf[j] == ';') /* found end of this command */
 	{
-		bafetna[j] = 0; /* replace semicolon with null */
+		buf[j] = 0; /* replace semicolon with null */
 		info->cmd_buf_type = CMD_CHAIN;
 	}
 	else
@@ -38,14 +38,14 @@ int is_chain(info_t *info, char *bafetna, size_t *p)
 /**
  * check_chain - checks we should continue chaining based on last status
  * @info: the parameter struct
- * @bafetna: the char buffer
- * @p: address of current position in bafetna
- * @i: starting position in bafetna
- * @len: length of bafetna
+ * @buf: the char buffer
+ * @p: address of current position in buf
+ * @i: starting position in buf
+ * @len: length of buf
  *
  * Return: Void
  */
-void check_chain(info_t *info, char *bafetna, size_t *p, size_t i, size_t len)
+void check_chain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 {
 	size_t j = *p;
 
@@ -53,7 +53,7 @@ void check_chain(info_t *info, char *bafetna, size_t *p, size_t i, size_t len)
 	{
 		if (info->status)
 		{
-			bafetna[i] = 0;
+			buf[i] = 0;
 			j = len;
 		}
 	}
@@ -61,7 +61,7 @@ void check_chain(info_t *info, char *bafetna, size_t *p, size_t i, size_t len)
 	{
 		if (!info->status)
 		{
-			bafetna[i] = 0;
+			buf[i] = 0;
 			j = len;
 		}
 	}

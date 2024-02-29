@@ -2,57 +2,57 @@
 
 /**
  * hsh - main shell loop
- * @inffppppp: the parameter & return inffppppp struct
- * @messssi: the argument vector from main()
+ * @info: the parameter & return info struct
+ * @av: the argument vector from main()
  *
  * Return: 0 on success, 1 on error, or error code
  */
-int hsh(info_t *inffppppp, char **messssi)
+int hsh(info_t *info, char **av)
 {
 	ssize_t r = 0;
 	int builtin_ret = 0;
 
 	while (r != -1 && builtin_ret != -2)
 	{
-		clear_info(inffppppp);
-		if (interactive(inffppppp))
+		clear_info(info);
+		if (interactive(info))
 			_puts("$ ");
 		_eputchar(BUF_FLUSH);
-		r = get_input(inffppppp);
+		r = get_input(info);
 		if (r != -1)
 		{
-			set_info(inffppppp, messssi);
-			builtin_ret = find_builtin(inffppppp);
+			set_info(info, av);
+			builtin_ret = find_builtin(info);
 			if (builtin_ret == -1)
-				find_cmd(inffppppp);
+				find_cmd(info);
 		}
-		else if (interactive(inffppppp))
+		else if (interactive(info))
 			_putchar('\n');
-		free_info(inffppppp, 0);
+		free_info(info, 0);
 	}
-	write_history(inffppppp);
-	free_info(inffppppp, 1);
-	if (!interactive(inffppppp) && inffppppp->status)
-		exit(inffppppp->status);
+	write_history(info);
+	free_info(info, 1);
+	if (!interactive(info) && info->status)
+		exit(info->status);
 	if (builtin_ret == -2)
 	{
-		if (inffppppp->err_num == -1)
-			exit(inffppppp->status);
-		exit(inffppppp->err_num);
+		if (info->err_num == -1)
+			exit(info->status);
+		exit(info->err_num);
 	}
 	return (builtin_ret);
 }
 
 /**
  * find_builtin - finds a builtin command
- * @inffppppp: the parameter & return inffppppp struct
+ * @info: the parameter & return info struct
  *
  * Return: -1 if builtin not found,
  *			0 if builtin executed successfully,
  *			1 if builtin found but not successful,
  *			-2 if builtin signals exit()
  */
-int find_builtin(info_t *inffppppp)
+int find_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
@@ -68,10 +68,10 @@ int find_builtin(info_t *inffppppp)
 	};
 
 	for (i = 0; builtintbl[i].type; i++)
-		if (_strcmp(inffppppp->argv[0], builtintbl[i].type) == 0)
+		if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
 		{
-			inffppppp->line_count++;
-			built_in_ret = builtintbl[i].func(inffppppp);
+			info->line_count++;
+			built_in_ret = builtintbl[i].func(info);
 			break;
 		}
 	return (built_in_ret);
@@ -79,53 +79,53 @@ int find_builtin(info_t *inffppppp)
 
 /**
  * find_cmd - finds a command in PATH
- * @inffppppp: the parameter & return inffppppp struct
+ * @info: the parameter & return info struct
  *
  * Return: void
  */
-void find_cmd(info_t *inffppppp)
+void find_cmd(info_t *info)
 {
 	char *path = NULL;
 	int i, k;
 
-	inffppppp->path = inffppppp->argv[0];
-	if (inffppppp->linecount_flag == 1)
+	info->path = info->argv[0];
+	if (info->linecount_flag == 1)
 	{
-		inffppppp->line_count++;
-		inffppppp->linecount_flag = 0;
+		info->line_count++;
+		info->linecount_flag = 0;
 	}
-	for (i = 0, k = 0; inffppppp->arg[i]; i++)
-		if (!is_delim(inffppppp->arg[i], " \t\n"))
+	for (i = 0, k = 0; info->arg[i]; i++)
+		if (!is_delim(info->arg[i], " \t\n"))
 			k++;
 	if (!k)
 		return;
 
-	path = find_path(inffppppp, _getenv(inffppppp, "PATH="), inffppppp->argv[0]);
+	path = find_path(info, _getenv(info, "PATH="), info->argv[0]);
 	if (path)
 	{
-		inffppppp->path = path;
-		fork_cmd(inffppppp);
+		info->path = path;
+		fork_cmd(info);
 	}
 	else
 	{
-		if ((interactive(inffppppp) || _getenv(inffppppp, "PATH=")
-			|| inffppppp->argv[0][0] == '/') && is_cmd(inffppppp, inffppppp->argv[0]))
-			fork_cmd(inffppppp);
-		else if (*(inffppppp->arg) != '\n')
+		if ((interactive(info) || _getenv(info, "PATH=")
+			|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
+			fork_cmd(info);
+		else if (*(info->arg) != '\n')
 		{
-			inffppppp->status = 127;
-			print_error(inffppppp, "not found\n");
+			info->status = 127;
+			print_error(info, "not found\n");
 		}
 	}
 }
 
 /**
  * fork_cmd - forks a an exec thread to run cmd
- * @inffppppp: the parameter & return inffppppp struct
+ * @info: the parameter & return info struct
  *
  * Return: void
  */
-void fork_cmd(info_t *inffppppp)
+void fork_cmd(info_t *info)
 {
 	pid_t child_pid;
 
@@ -138,9 +138,9 @@ void fork_cmd(info_t *inffppppp)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(inffppppp->path, inffppppp->argv, get_environ(inffppppp)) == -1)
+		if (execve(info->path, info->argv, get_environ(info)) == -1)
 		{
-			free_info(inffppppp, 1);
+			free_info(info, 1);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
@@ -149,12 +149,12 @@ void fork_cmd(info_t *inffppppp)
 	}
 	else
 	{
-		wait(&(inffppppp->status));
-		if (WIFEXITED(inffppppp->status))
+		wait(&(info->status));
+		if (WIFEXITED(info->status))
 		{
-			inffppppp->status = WEXITSTATUS(inffppppp->status);
-			if (inffppppp->status == 126)
-				print_error(inffppppp, "Permission denied\n");
+			info->status = WEXITSTATUS(info->status);
+			if (info->status == 126)
+				print_error(info, "Permission denied\n");
 		}
 	}
 }

@@ -3,11 +3,11 @@
 /**
  * main - entry point
  * @ac: arg count
- * @wewewewe: arg vector
+ * @av: arg vector
  *
  * Return: 0 on success, 1 on error
  */
-int main(int ac, char **wewewewe)
+int main(int ac, char **av)
 {
 	info_t info[] = { INFO_INIT };
 	int fd = 2;
@@ -19,16 +19,16 @@ int main(int ac, char **wewewewe)
 
 	if (ac == 2)
 	{
-		fd = open(wewewewe[1], O_RDONLY);
+		fd = open(av[1], O_RDONLY);
 		if (fd == -1)
 		{
 			if (errno == EACCES)
 				exit(126);
 			if (errno == ENOENT)
 			{
-				_eputs(wewewewe[0]);
+				_eputs(av[0]);
 				_eputs(": 0: Can't open ");
-				_eputs(wewewewe[1]);
+				_eputs(av[1]);
 				_eputchar('\n');
 				_eputchar(BUF_FLUSH);
 				exit(127);
@@ -39,6 +39,6 @@ int main(int ac, char **wewewewe)
 	}
 	populate_env_list(info);
 	read_history(info);
-	hsh(info, wewewewe);
+	hsh(info, av);
 	return (EXIT_SUCCESS);
 }

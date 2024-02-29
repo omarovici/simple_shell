@@ -2,73 +2,73 @@
 
 /**
  * clear_info - initializes info_t struct
- * @ssdskfgfkhkhfg: struct address
+ * @info: struct address
  */
-void clear_info(info_t *ssdskfgfkhkhfg)
+void clear_info(info_t *info)
 {
-	ssdskfgfkhkhfg->arg = NULL;
-	ssdskfgfkhkhfg->argv = NULL;
-	ssdskfgfkhkhfg->path = NULL;
-	ssdskfgfkhkhfg->argc = 0;
+	info->arg = NULL;
+	info->argv = NULL;
+	info->path = NULL;
+	info->argc = 0;
 }
 
 /**
  * set_info - initializes info_t struct
- * @ssdskfgfkhkhfg: struct address
+ * @info: struct address
  * @av: argument vector
  */
-void set_info(info_t *ssdskfgfkhkhfg, char **av)
+void set_info(info_t *info, char **av)
 {
 	int i = 0;
 
-	ssdskfgfkhkhfg->fname = av[0];
-	if (ssdskfgfkhkhfg->arg)
+	info->fname = av[0];
+	if (info->arg)
 	{
-		ssdskfgfkhkhfg->argv = strtow(ssdskfgfkhkhfg->arg, " \t");
-		if (!ssdskfgfkhkhfg->argv)
+		info->argv = strtow(info->arg, " \t");
+		if (!info->argv)
 		{
 
-			ssdskfgfkhkhfg->argv = malloc(sizeof(char *) * 2);
-			if (ssdskfgfkhkhfg->argv)
+			info->argv = malloc(sizeof(char *) * 2);
+			if (info->argv)
 			{
-				ssdskfgfkhkhfg->argv[0] = _strdup(ssdskfgfkhkhfg->arg);
-				ssdskfgfkhkhfg->argv[1] = NULL;
+				info->argv[0] = _strdup(info->arg);
+				info->argv[1] = NULL;
 			}
 		}
-		for (i = 0; ssdskfgfkhkhfg->argv && ssdskfgfkhkhfg->argv[i]; i++)
+		for (i = 0; info->argv && info->argv[i]; i++)
 			;
-		ssdskfgfkhkhfg->argc = i;
+		info->argc = i;
 
-		replace_alias(ssdskfgfkhkhfg);
-		replace_vars(ssdskfgfkhkhfg);
+		replace_alias(info);
+		replace_vars(info);
 	}
 }
 
 /**
  * free_info - frees info_t struct fields
- * @ssdskfgfkhkhfg: struct address
- * @alldlslfdl: true if freeing alldlslfdl fields
+ * @info: struct address
+ * @all: true if freeing all fields
  */
-void free_info(info_t *ssdskfgfkhkhfg, int alldlslfdl)
+void free_info(info_t *info, int all)
 {
-	ffree(ssdskfgfkhkhfg->argv);
-	ssdskfgfkhkhfg->argv = NULL;
-	ssdskfgfkhkhfg->path = NULL;
-	if (alldlslfdl)
+	ffree(info->argv);
+	info->argv = NULL;
+	info->path = NULL;
+	if (all)
 	{
-		if (!ssdskfgfkhkhfg->cmd_buf)
-			free(ssdskfgfkhkhfg->arg);
-		if (ssdskfgfkhkhfg->env)
-			free_list(&(ssdskfgfkhkhfg->env));
-		if (ssdskfgfkhkhfg->history)
-			free_list(&(ssdskfgfkhkhfg->history));
-		if (ssdskfgfkhkhfg->alias)
-			free_list(&(ssdskfgfkhkhfg->alias));
-		ffree(ssdskfgfkhkhfg->environ);
-			ssdskfgfkhkhfg->environ = NULL;
-		bfree((void **)ssdskfgfkhkhfg->cmd_buf);
-		if (ssdskfgfkhkhfg->readfd > 2)
-			close(ssdskfgfkhkhfg->readfd);
+		if (!info->cmd_buf)
+			free(info->arg);
+		if (info->env)
+			free_list(&(info->env));
+		if (info->history)
+			free_list(&(info->history));
+		if (info->alias)
+			free_list(&(info->alias));
+		ffree(info->environ);
+			info->environ = NULL;
+		bfree((void **)info->cmd_buf);
+		if (info->readfd > 2)
+			close(info->readfd);
 		_putchar(BUF_FLUSH);
 	}
 }

@@ -2,92 +2,92 @@
 
 /**
  * get_environ - returns the string array copy of our environ
- * @qsqwyerh: Structure containing potential arguments. Used to maintain
+ * @info: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
  * Return: Always 0
  */
-char **get_environ(info_t *qsqwyerh)
+char **get_environ(info_t *info)
 {
-	if (!qsqwyerh->environ || qsqwyerh->env_changed)
+	if (!info->environ || info->env_changed)
 	{
-		qsqwyerh->environ = list_to_strings(qsqwyerh->env);
-		qsqwyerh->env_changed = 0;
+		info->environ = list_to_strings(info->env);
+		info->env_changed = 0;
 	}
 
-	return (qsqwyerh->environ);
+	return (info->environ);
 }
 
 /**
  * _unsetenv - Remove an environment variable
- * @qsqwyerh: Structure containing potential arguments. Used to maintain
+ * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  *  Return: 1 on delete, 0 otherwise
- * @ffffffsdgagsdjfdfkgf: the string env ffffffsdgagsdjfdfkgf property
+ * @var: the string env var property
  */
-int _unsetenv(info_t *qsqwyerh, char *ffffffsdgagsdjfdfkgf)
+int _unsetenv(info_t *info, char *var)
 {
-	list_t *node = qsqwyerh->env;
+	list_t *node = info->env;
 	size_t i = 0;
 	char *p;
 
-	if (!node || !ffffffsdgagsdjfdfkgf)
+	if (!node || !var)
 		return (0);
 
 	while (node)
 	{
-		p = starts_with(node->str, ffffffsdgagsdjfdfkgf);
+		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			qsqwyerh->env_changed = delete_node_at_index(&(qsqwyerh->env), i);
+			info->env_changed = delete_node_at_index(&(info->env), i);
 			i = 0;
-			node = qsqwyerh->env;
+			node = info->env;
 			continue;
 		}
 		node = node->next;
 		i++;
 	}
-	return (qsqwyerh->env_changed);
+	return (info->env_changed);
 }
 
 /**
  * _setenv - Initialize a new environment variable,
  *             or modify an existing one
- * @qsqwyerh: Structure containing potential arguments. Used to maintain
+ * @info: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
- * @ffffffsdgagsdjfdfkgf: the string env ffffffsdgagsdjfdfkgf property
- * @value: the string env ffffffsdgagsdjfdfkgf value
+ * @var: the string env var property
+ * @value: the string env var value
  *  Return: Always 0
  */
-int _setenv(info_t *qsqwyerh, char *ffffffsdgagsdjfdfkgf, char *value)
+int _setenv(info_t *info, char *var, char *value)
 {
 	char *buf = NULL;
 	list_t *node;
 	char *p;
 
-	if (!ffffffsdgagsdjfdfkgf || !value)
+	if (!var || !value)
 		return (0);
 
-	buf = malloc(_strlen(ffffffsdgagsdjfdfkgf) + _strlen(value) + 2);
+	buf = malloc(_strlen(var) + _strlen(value) + 2);
 	if (!buf)
 		return (1);
-	_strcpy(buf, ffffffsdgagsdjfdfkgf);
+	_strcpy(buf, var);
 	_strcat(buf, "=");
 	_strcat(buf, value);
-	node = qsqwyerh->env;
+	node = info->env;
 	while (node)
 	{
-		p = starts_with(node->str, ffffffsdgagsdjfdfkgf);
+		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
 			free(node->str);
 			node->str = buf;
-			qsqwyerh->env_changed = 1;
+			info->env_changed = 1;
 			return (0);
 		}
 		node = node->next;
 	}
-	add_node_end(&(qsqwyerh->env), buf, 0);
+	add_node_end(&(info->env), buf, 0);
 	free(buf);
-	qsqwyerh->env_changed = 1;
+	info->env_changed = 1;
 	return (0);
 }

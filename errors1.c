@@ -30,24 +30,24 @@ int _erratoi(char *s)
 
 /**
  * print_error - prints an error message
- * @uuuuu: the parameter & return uuuuu struct
+ * @info: the parameter & return info struct
  * @estr: string containing specified error type
  * Return: 0 if no numbers in string, converted number otherwise
  *        -1 on error
  */
-void print_error(info_t *uuuuu, char *estr)
+void print_error(info_t *info, char *estr)
 {
-	_eputs(uuuuu->fname);
+	_eputs(info->fname);
 	_eputs(": ");
-	print_d(uuuuu->line_count, STDERR_FILENO);
+	print_d(info->line_count, STDERR_FILENO);
 	_eputs(": ");
-	_eputs(uuuuu->argv[0]);
+	_eputs(info->argv[0]);
 	_eputs(": ");
 	_eputs(estr);
 }
 
 /**
- * print_d - function prints a decimal (integer) number (bbbbbbbb 10)
+ * print_d - function prints a decimal (integer) number (base 10)
  * @input: the input
  * @fd: the filedescriptor to write to
  *
@@ -87,33 +87,33 @@ int print_d(int input, int fd)
 
 /**
  * convert_number - converter function, a clone of itoa
- * @numnummm: number
- * @bbbbbbbb: bbbbbbbb
- * @flflfllflflalda: argument flflfllflflalda
+ * @num: number
+ * @base: base
+ * @flags: argument flags
  *
  * Return: string
  */
-char *convert_number(long int numnummm, int bbbbbbbb, int flflfllflflalda)
+char *convert_number(long int num, int base, int flags)
 {
-	static char *sfdgdsgfdg;
-	static char ertytre[50];
+	static char *array;
+	static char buffer[50];
 	char sign = 0;
 	char *ptr;
-	unsigned long n = numnummm;
+	unsigned long n = num;
 
-	if (!(flflfllflflalda & CONVERT_UNSIGNED) && numnummm < 0)
+	if (!(flags & CONVERT_UNSIGNED) && num < 0)
 	{
-		n = -numnummm;
+		n = -num;
 		sign = '-';
 
 	}
-	sfdgdsgfdg = flflfllflflalda & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
-	ptr = &ertytre[49];
+	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
+	ptr = &buffer[49];
 	*ptr = '\0';
 
 	do	{
-		*--ptr = sfdgdsgfdg[n % bbbbbbbb];
-		n /= bbbbbbbb;
+		*--ptr = array[n % base];
+		n /= base;
 	} while (n != 0);
 
 	if (sign)
@@ -123,18 +123,18 @@ char *convert_number(long int numnummm, int bbbbbbbb, int flflfllflflalda)
 
 /**
  * remove_comments - function replaces first instance of '#' with '\0'
- * @dfgdjsfdsf: address of the string to modify
+ * @buf: address of the string to modify
  *
  * Return: Always 0;
  */
-void remove_comments(char *dfgdjsfdsf)
+void remove_comments(char *buf)
 {
 	int i;
 
-	for (i = 0; dfgdjsfdsf[i] != '\0'; i++)
-		if (dfgdjsfdsf[i] == '#' && (!i || dfgdjsfdsf[i - 1] == ' '))
+	for (i = 0; buf[i] != '\0'; i++)
+		if (buf[i] == '#' && (!i || buf[i - 1] == ' '))
 		{
-			dfgdjsfdsf[i] = '\0';
+			buf[i] = '\0';
 			break;
 		}
 }
