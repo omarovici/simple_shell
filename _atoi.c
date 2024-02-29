@@ -2,73 +2,73 @@
 
 /**
  * interactive - returns true if shell is interactive mode
- * @info: struct address
+ * @i: struct address
  *
  * Return: 1 if interactive mode, 0 otherwise
  */
-int interactive(info_t *info)
+int interactive(inf *i)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
+    return (isatty(STDIN_FILENO) && i->readfd <= 2);
 }
 
 /**
  * is_delim - checks if character is a delimeter
- * @c: the char to check
- * @delim: the delimeter string
+ * @ce: the char to check
+ * @de: the delimeter string
  * Return: 1 if true, 0 if false
  */
-int is_delim(char c, char *delim)
+int is_delim(char ce, char *de)
 {
-	while (*delim)
-		if (*delim++ == c)
-			return (1);
-	return (0);
+    while (*de)
+        if (*de++ == ce)
+            return (1);
+    return (0);
 }
 
 /**
  *_isalpha - checks for alphabetic character
- *@c: The character to input
+ *@ci: The character to input
  *Return: 1 if c is alphabetic, 0 otherwise
  */
 
-int _isalpha(int c)
+int _isalpha(int ci)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
+    if ((ci >= 'a' && ci <= 'z') || (ci >= 'A' && ci <= 'Z'))
+        return (1);
+    else
+        return (0);
 }
 
 /**
  *_atoi - converts a string to an integer
- *@s: the string to be converted
+ *@se: the string to be converted
  *Return: 0 if no numbers in string, converted number otherwise
  */
 
-int _atoi(char *s)
+int _atoi(char *se)
 {
-	int i, sign = 1, flag = 0, output;
-	unsigned int result = 0;
+    int i, signee = 1, ffl = 0, out;
+    unsigned int sum = 0;
 
-	for (i = 0;  s[i] != '\0' && flag != 2; i++)
-	{
-		if (s[i] == '-')
-			sign *= -1;
+    for (i = 0;  se[i] != '\0' && ffl != 2; i++)
+    {
+        if (se[i] == '-')
+            signee *= -1;
 
-		if (s[i] >= '0' && s[i] <= '9')
-		{
-			flag = 1;
-			result *= 10;
-			result += (s[i] - '0');
-		}
-		else if (flag == 1)
-			flag = 2;
-	}
+        if (se[i] >= '0' && se[i] <= '9')
+        {
+            ffl = 1;
+            sum *= 10;
+            sum += (se[i] - '0');
+        }
+        else if (ffl == 1)
+            ffl = 2;
+    }
 
-	if (sign == -1)
-		output = -result;
-	else
-		output = result;
+    if (signee == -1)
+        out = -sum;
+    else
+        out = sum;
 
-	return (output);
+    return (out);
 }
