@@ -102,13 +102,13 @@ int _myalias(info_t *info)
 		}
 		return (0);
 	}
-	for (i = 1; info->argv[i]; i++)
+	for (i = 1; info->agoooo[i]; i++)
 	{
-		p = _strchr(info->argv[i], '=');
+		p = _strchr(info->agoooo[i], '=');
 		if (p)
-			set_alias(info, info->argv[i]);
+			set_alias(info, info->agoooo[i]);
 		else
-			print_alias(node_starts_with(info->alias, info->argv[i], '='));
+			print_alias(node_starts_with(info->alias, info->agoooo[i], '='));
 	}
 
 	return (0);
