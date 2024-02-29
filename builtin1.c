@@ -3,24 +3,24 @@
 /**
  * _myhistory - displays the history list, one command by line, preceded
  *              with line numbers, starting at 0.
- * @info: Structure containing potential arguments. Used to maintain
+ * @inffffff: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  *  Return: Always 0
  */
-int _myhistory(info_t *info)
+int _myhistory(info_t *inffffff)
 {
-	print_list(info->history);
+	print_list(inffffff->history);
 	return (0);
 }
 
 /**
  * unset_alias - sets alias to string
- * @info: parameter struct
+ * @inffffff: parameter struct
  * @str: the string alias
  *
  * Return: Always 0 on success, 1 on error
  */
-int unset_alias(info_t *info, char *str)
+int unset_alias(info_t *inffffff, char *str)
 {
 	char *p, c;
 	int ret;
@@ -30,20 +30,20 @@ int unset_alias(info_t *info, char *str)
 		return (1);
 	c = *p;
 	*p = 0;
-	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	ret = delete_node_at_index(&(inffffff->alias),
+		get_node_index(inffffff->alias, node_starts_with(inffffff->alias, str, -1)));
 	*p = c;
 	return (ret);
 }
 
 /**
  * set_alias - sets alias to string
- * @info: parameter struct
+ * @inffffff: parameter struct
  * @str: the string alias
  *
  * Return: Always 0 on success, 1 on error
  */
-int set_alias(info_t *info, char *str)
+int set_alias(info_t *inffffff, char *str)
 {
 	char *p;
 
@@ -51,10 +51,10 @@ int set_alias(info_t *info, char *str)
 	if (!p)
 		return (1);
 	if (!*++p)
-		return (unset_alias(info, str));
+		return (unset_alias(inffffff, str));
 
-	unset_alias(info, str);
-	return (add_node_end(&(info->alias), str, 0) == NULL);
+	unset_alias(inffffff, str);
+	return (add_node_end(&(inffffff->alias), str, 0) == NULL);
 }
 
 /**
@@ -82,19 +82,19 @@ int print_alias(list_t *node)
 
 /**
  * _myalias - mimics the alias builtin (man alias)
- * @info: Structure containing potential arguments. Used to maintain
+ * @inffffff: Structure containing potential arguments. Used to maintain
  *          constant function prototype.
  *  Return: Always 0
  */
-int _myalias(info_t *info)
+int _myalias(info_t *inffffff)
 {
 	int i = 0;
 	char *p = NULL;
 	list_t *node = NULL;
 
-	if (info->argc == 1)
+	if (inffffff->argc == 1)
 	{
-		node = info->alias;
+		node = inffffff->alias;
 		while (node)
 		{
 			print_alias(node);
@@ -102,13 +102,13 @@ int _myalias(info_t *info)
 		}
 		return (0);
 	}
-	for (i = 1; info->argv[i]; i++)
+	for (i = 1; inffffff->argv[i]; i++)
 	{
-		p = _strchr(info->argv[i], '=');
+		p = _strchr(inffffff->argv[i], '=');
 		if (p)
-			set_alias(info, info->argv[i]);
+			set_alias(inffffff, inffffff->argv[i]);
 		else
-			print_alias(node_starts_with(info->alias, info->argv[i], '='));
+			print_alias(node_starts_with(inffffff->alias, inffffff->argv[i], '='));
 	}
 
 	return (0);

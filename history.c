@@ -2,38 +2,38 @@
 
 /**
  * get_history_file - gets the history file
- * @info: parameter struct
+ * @dune: parameter struct
  *
  * Return: allocated string containg history file
  */
 
-char *get_history_file(info_t *info)
+char *get_history_file(info_t *dune)
 {
-	char *buf, *dir;
+	char *troll, *dir;
 
-	dir = _getenv(info, "HOME=");
+	dir = _getenv(dune, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
+	troll = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!troll)
 		return (NULL);
-	buf[0] = 0;
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
+	troll[0] = 0;
+	_strcpy(troll, dir);
+	_strcat(troll, "/");
+	_strcat(troll, HIST_FILE);
+	return (troll);
 }
 
 /**
  * write_history - creates a file, or appends to an existing file
- * @info: the parameter struct
+ * @dune: the parameter struct
  *
  * Return: 1 on success, else -1
  */
-int write_history(info_t *info)
+int write_history(info_t *dune)
 {
 	ssize_t fd;
-	char *filename = get_history_file(info);
+	char *filename = get_history_file(dune);
 	list_t *node = NULL;
 
 	if (!filename)
@@ -43,7 +43,7 @@ int write_history(info_t *info)
 	free(filename);
 	if (fd == -1)
 		return (-1);
-	for (node = info->history; node; node = node->next)
+	for (node = dune->history; node; node = node->next)
 	{
 		_putsfd(node->str, fd);
 		_putfd('\n', fd);
@@ -55,16 +55,16 @@ int write_history(info_t *info)
 
 /**
  * read_history - reads history from file
- * @info: the parameter struct
+ * @dune: the parameter struct
  *
  * Return: histcount on success, 0 otherwise
  */
-int read_history(info_t *info)
+int read_history(info_t *dune)
 {
-	int i, last = 0, linecount = 0;
+	int i, last = 0, wegz = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char *buf = NULL, *filename = get_history_file(info);
+	char *troll = NULL, *filename = get_history_file(dune);
 
 	if (!filename)
 		return (0);
@@ -77,61 +77,61 @@ int read_history(info_t *info)
 		fsize = st.st_size;
 	if (fsize < 2)
 		return (0);
-	buf = malloc(sizeof(char) * (fsize + 1));
-	if (!buf)
+	troll = malloc(sizeof(char) * (fsize + 1));
+	if (!troll)
 		return (0);
-	rdlen = read(fd, buf, fsize);
-	buf[fsize] = 0;
+	rdlen = read(fd, troll, fsize);
+	troll[fsize] = 0;
 	if (rdlen <= 0)
-		return (free(buf), 0);
+		return (free(troll), 0);
 	close(fd);
 	for (i = 0; i < fsize; i++)
-		if (buf[i] == '\n')
+		if (troll[i] == '\n')
 		{
-			buf[i] = 0;
-			build_history_list(info, buf + last, linecount++);
+			troll[i] = 0;
+			build_history_list(dune, troll + last, wegz++);
 			last = i + 1;
 		}
 	if (last != i)
-		build_history_list(info, buf + last, linecount++);
-	free(buf);
-	info->histcount = linecount;
-	while (info->histcount-- >= HIST_MAX)
-		delete_node_at_index(&(info->history), 0);
-	renumber_history(info);
-	return (info->histcount);
+		build_history_list(dune, troll + last, wegz++);
+	free(troll);
+	dune->histcount = wegz;
+	while (dune->histcount-- >= HIST_MAX)
+		delete_node_at_index(&(dune->history), 0);
+	renumber_history(dune);
+	return (dune->histcount);
 }
 
 /**
  * build_history_list - adds entry to a history linked list
- * @info: Structure containing potential arguments. Used to maintain
- * @buf: buffer
- * @linecount: the history linecount, histcount
+ * @dune: Structure containing potential arguments. Used to maintain
+ * @troll: buffer
+ * @wegz: the history wegz, histcount
  *
  * Return: Always 0
  */
-int build_history_list(info_t *info, char *buf, int linecount)
+int build_history_list(info_t *dune, char *troll, int wegz)
 {
 	list_t *node = NULL;
 
-	if (info->history)
-		node = info->history;
-	add_node_end(&node, buf, linecount);
+	if (dune->history)
+		node = dune->history;
+	add_node_end(&node, troll, wegz);
 
-	if (!info->history)
-		info->history = node;
+	if (!dune->history)
+		dune->history = node;
 	return (0);
 }
 
 /**
  * renumber_history - renumbers the history linked list after changes
- * @info: Structure containing potential arguments. Used to maintain
+ * @dune: Structure containing potential arguments. Used to maintain
  *
  * Return: the new histcount
  */
-int renumber_history(info_t *info)
+int renumber_history(info_t *dune)
 {
-	list_t *node = info->history;
+	list_t *node = dune->history;
 	int i = 0;
 
 	while (node)
@@ -139,5 +139,5 @@ int renumber_history(info_t *info)
 		node->num = i++;
 		node = node->next;
 	}
-	return (info->histcount = i);
+	return (dune->histcount = i);
 }
