@@ -7,7 +7,7 @@
 void clear_info(info_t *info)
 {
 	info->arg = NULL;
-	info->agoooo = NULL;
+	info->argv = NULL;
 	info->path = NULL;
 	info->argc = 0;
 }
@@ -24,18 +24,18 @@ void set_info(info_t *info, char **av)
 	info->fname = av[0];
 	if (info->arg)
 	{
-		info->agoooo = strtow(info->arg, " \t");
-		if (!info->agoooo)
+		info->argv = strtow(info->arg, " \t");
+		if (!info->argv)
 		{
 
-			info->agoooo = malloc(sizeof(char *) * 2);
-			if (info->agoooo)
+			info->argv = malloc(sizeof(char *) * 2);
+			if (info->argv)
 			{
-				info->agoooo[0] = _strdup(info->arg);
-				info->agoooo[1] = NULL;
+				info->argv[0] = _strdup(info->arg);
+				info->argv[1] = NULL;
 			}
 		}
-		for (i = 0; info->agoooo && info->agoooo[i]; i++)
+		for (i = 0; info->argv && info->argv[i]; i++)
 			;
 		info->argc = i;
 
@@ -51,8 +51,8 @@ void set_info(info_t *info, char **av)
  */
 void free_info(info_t *info, int all)
 {
-	ffree(info->agoooo);
-	info->agoooo = NULL;
+	ffree(info->argv);
+	info->argv = NULL;
 	info->path = NULL;
 	if (all)
 	{
