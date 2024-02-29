@@ -1,99 +1,97 @@
 #include "shell.h"
 
 /**
- * _myexit - Exits the shell.
- * @infff: Structure containing potential arguments. Used to maintain
- *         a constant function prototype.
- *
- * Return: Exits with a given exit status (0) if info.argv[0] != "exit".
+ * _myexit - exits the shell
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: exits with a given exit status
+ *         (0) if info.argv[0] != "exit"
  */
-int _myexit(info_t *infff)
+int _myexit(info_t *info)
 {
-    int echeck;
+	int exitcheck;
 
-    if (infff->agoooo[1])  /* If there is an exit argument */
-    {
-        echeck = _erratoi(infff->agoooo[1]);
-        if (echeck == -1)
-        {
-            infff->status = 2;
-            print_error(infff, "Illegal number: ");
-            _eputs(infff->agoooo[1]);
-            _eputchar('\n');
-            return (1);
-        }
-        infff->err_num = _erratoi(infff->agoooo[1]);
-        return (-2);
-    }
-    infff->err_num = -1;
-    return (-2);
+	if (info->argv[1])  /* If there is an exit arguement */
+	{
+		exitcheck = _erratoi(info->argv[1]);
+		if (exitcheck == -1)
+		{
+			info->status = 2;
+			print_error(info, "Illegal number: ");
+			_eputs(info->argv[1]);
+			_eputchar('\n');
+			return (1);
+		}
+		info->err_num = _erratoi(info->argv[1]);
+		return (-2);
+	}
+	info->err_num = -1;
+	return (-2);
 }
 
 /**
- * _mycd - Changes the current directory of the process.
- * @iiifffff: Structure containing potential arguments. Used to maintain
- *            a constant function prototype.
- *
- * Return: Always 0.
+ * _mycd - changes the current directory of the process
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: Always 0
  */
-int _mycd(info_t *iiifffff)
+int _mycd(info_t *info)
 {
-    char *sesesese, *daww, baffff[1024];
-    int retttt;
+	char *s, *dir, buffer[1024];
+	int chdir_ret;
 
-    sesesese = getcwd(baffff, 1024);
-    if (!sesesese)
-        _puts("TODO: >>getcwd failure emsg here<<\n");
-    if (!iiifffff->agoooo[1])
-    {
-        daww = _getenv(iiifffff, "HOME=");
-        if (!daww)
-            retttt = /* TODO: what should this be? */
-                chdir((daww = _getenv(iiifffff, "PWD=")) ? daww : "/");
-        else
-            retttt = chdir(daww);
-    }
-    else if (_strcmp(iiifffff->agoooo[1], "-") == 0)
-    {
-        if (!_getenv(iiifffff, "OLDPWD="))
-        {
-            _puts(sesesese);
-            _putchar('\n');
-            return (1);
-        }
-        _puts(_getenv(iiifffff, "OLDPWD=")), _putchar('\n');
-        retttt = /* TODO: what should this be? */
-            chdir((daww = _getenv(iiifffff, "OLDPWD=")) ? daww : "/");
-    }
-    else
-        retttt = chdir(iiifffff->agoooo[1]);
-    if (retttt == -1)
-    {
-        print_error(iiifffff, "can't cd to ");
-        _eputs(iiifffff->agoooo[1]), _eputchar('\n');
-    }
-    else
-    {
-        _setenv(iiifffff, "OLDPWD", _getenv(iiifffff, "PWD="));
-        _setenv(iiifffff, "PWD", getcwd(baffff, 1024));
-    }
-    return (0);
+	s = getcwd(buffer, 1024);
+	if (!s)
+		_puts("TODO: >>getcwd failure emsg here<<\n");
+	if (!info->argv[1])
+	{
+		dir = _getenv(info, "HOME=");
+		if (!dir)
+			chdir_ret = /* TODO: what should this be? */
+				chdir((dir = _getenv(info, "PWD=")) ? dir : "/");
+		else
+			chdir_ret = chdir(dir);
+	}
+	else if (_strcmp(info->argv[1], "-") == 0)
+	{
+		if (!_getenv(info, "OLDPWD="))
+		{
+			_puts(s);
+			_putchar('\n');
+			return (1);
+		}
+		_puts(_getenv(info, "OLDPWD=")), _putchar('\n');
+		chdir_ret = /* TODO: what should this be? */
+			chdir((dir = _getenv(info, "OLDPWD=")) ? dir : "/");
+	}
+	else
+		chdir_ret = chdir(info->argv[1]);
+	if (chdir_ret == -1)
+	{
+		print_error(info, "can't cd to ");
+		_eputs(info->argv[1]), _eputchar('\n');
+	}
+	else
+	{
+		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		_setenv(info, "PWD", getcwd(buffer, 1024));
+	}
+	return (0);
 }
 
 /**
- * _myhelp - Displays help information.
- * @fofooo: Structure containing potential arguments. Used to maintain
- *          a constant function prototype.
- *
- * Return: Always 0.
+ * _myhelp - changes the current directory of the process
+ * @info: Structure containing potential arguments. Used to maintain
+ *          constant function prototype.
+ *  Return: Always 0
  */
-int _myhelp(info_t *fofooo)
+int _myhelp(info_t *info)
 {
-    char **argarr;
+	char **arg_array;
 
-    argarr = fofooo->agoooo;
-    _puts("help call works. Function not yet implemented \n");
-    if (0)
-        _puts(*argarr); /* temp att_unused workaround */
-    return (0);
+	arg_array = info->argv;
+	_puts("help call works. Function not yet implemented \n");
+	if (0)
+		_puts(*arg_array); /* temp att_unused workaround */
+	return (0);
 }
