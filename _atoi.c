@@ -2,73 +2,73 @@
 
 /**
  * interactive - returns true if shell is interactive mode
- * @info: struct address
+ * @inf: struct address
  *
  * Return: 1 if interactive mode, 0 otherwise
  */
-int interactive(info_t *info)
+int interactive(info_t *inf)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
+    return (isatty(STDIN_FILENO) && inf->readfd <= 2);
 }
 
 /**
  * is_delim - checks if character is a delimeter
- * @c: the char to check
- * @delim: the delimeter string
+ * @clcl: the char to check
+ * @del: the delimeter string
  * Return: 1 if true, 0 if false
  */
-int is_delim(char c, char *delim)
+int is_delim(char clcl, char *del)
 {
-	while (*delim)
-		if (*delim++ == c)
-			return (1);
-	return (0);
+    while (*del)
+        if (*del++ == clcl)
+            return (1);
+    return (0);
 }
 
 /**
  *_isalpha - checks for alphabetic character
  *@c: The character to input
- *Return: 1 if c is alphabetic, 0 otherwise
+ *Return: 1 if siiiii is alphabetic, 0 otherwise
  */
 
-int _isalpha(int c)
+int _isalpha(int siiiii)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
+    if ((siiiii >= 'a' && siiiii <= 'z') || (siiiii >= 'A' && siiiii <= 'Z'))
+        return (1);
+    else
+        return (0);
 }
 
 /**
  *_atoi - converts a string to an integer
- *@s: the string to be converted
+ *@ceeeeee: the string to be converted
  *Return: 0 if no numbers in string, converted number otherwise
  */
 
-int _atoi(char *s)
+int _atoi(char *ceeeeee)
 {
-	int i, sign = 1, flag = 0, output;
-	unsigned int result = 0;
+    int i, sig = 1, check = 0, out;
+    unsigned int rere = 0;
 
-	for (i = 0;  s[i] != '\0' && flag != 2; i++)
-	{
-		if (s[i] == '-')
-			sign *= -1;
+    for (i = 0; ceeeeee[i] != '\0' && check != 2; i++)
+    {
+        if (ceeeeee[i] == '-')
+            sig *= -1;
 
-		if (s[i] >= '0' && s[i] <= '9')
-		{
-			flag = 1;
-			result *= 10;
-			result += (s[i] - '0');
-		}
-		else if (flag == 1)
-			flag = 2;
-	}
+        if (ceeeeee[i] >= '0' && ceeeeee[i] <= '9')
+        {
+            check = 1;
+            rere *= 10;
+            rere += (ceeeeee[i] - '0');
+        }
+        else if (check == 1)
+            check = 2;
+    }
 
-	if (sign == -1)
-		output = -result;
-	else
-		output = result;
+    if (sig == -1)
+        out = -rere;
+    else
+        out = rere;
 
-	return (output);
+    return (out);
 }
